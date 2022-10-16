@@ -1,33 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { useGlobalhook } from "../context";
 
 export const List = () => {
   const style = {
-    width: "18rem",
+    width: "50rem",
     margin: "auto",
   };
   //loading part using usesate hook
-  const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState([]);
-  const [url, setUrl] = useState([]);
-
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [data, setData] = useState([]);
   //fetching part
-  const API = "https://hn.algolia.com/api/v1/search?query=HTML";
-  const fetchApiData = async (url) => {
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
+  // goes to context.js
 
-      setData(data.hits.slice(0, 5));
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  //page load on 1st time
-  useEffect(() => {
-    fetchApiData(API);
-  }, []);
+  const { hits, isLoading, removepost } = useGlobalhook();
 
   //update isLoading here with use state
   if (isLoading) {
@@ -37,20 +22,27 @@ export const List = () => {
       </>
     );
   }
-
-  console.log(data)
   return (
     <>
-      {data.map((item) => (
-        <div className="container my-3 ">
+      {hits.map((item) => (
+        <div className="container my-3" key={item.objectID}>
           <div className="card bg-light" style={style}>
             <div className="card-body bg-light">
-              <h5 className="card-title bg-light">HTML</h5>
-              <p className="card-text bg-light">{item.title}</p>
+              <h5 className="card-title bg-light">{item.title}</h5>
+              <h6 className="card-subtitle mb-2 text-muted bg-light">
+                By:{item.author}|{item.num_comments} comments
+              </h6>
+              <p className="card-text bg-light"></p>
               <a href={item.url} className="card-link mx-3 bg-light">
                 Read More
               </a>
-              <a href="#" className="card-link bg-light">
+              <a
+                href="#"
+                className="card-link bg-light "
+                onClick={() => {
+                  removepost(item.objectID);
+                }}
+              >
                 Remove
               </a>
             </div>

@@ -10,6 +10,7 @@ const reducer = (state, action) => {
         ...state,
         isLoading: false,
         hits: action.payload.hits,
+        nbPages: action.payload.nbPages,
       };
     case "REMOVE_POST":
       return {
@@ -23,6 +24,30 @@ const reducer = (state, action) => {
         ...state,
         query: action.payload,
       };
+    case "Next_Page": {
+      let pagenumber = state.page;
+      if (pagenumber > 50) {
+        pagenumber = 50;
+      } else {
+        pagenumber++;
+      }
+      return {
+        ...state,
+        page: pagenumber,
+      };
+    }
+    case "Prev_page": {
+      let pagenumber = state.page;
+      if (pagenumber <= 0) {
+        pagenumber = 0;
+      } else {
+        pagenumber--;
+      }
+      return {
+        ...state,
+        page: pagenumber,
+      };
+    }
   }
   return state;
 };

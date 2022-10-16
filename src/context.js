@@ -49,13 +49,23 @@ const AppProvider = ({ children }) => {
       payload: value,
     });
   };
+  const inc = (pageNo) => {
+    dispatch({
+      type: "Next_Page",
+    });
+  };
+  const dec = (pageNo) => {
+    dispatch({
+      type: "Prev_page",
+    });
+  };
   //page load on 1st time
   useEffect(() => {
     fetchApiData(`${API}query=${state.query}&page=${state.page}`);
-  }, [state.query]);
+  }, [state.query, state.page]);
 
   return (
-    <AppContext.Provider value={{ ...state, removepost, searchpost }}>
+    <AppContext.Provider value={{ ...state, removepost, searchpost, inc, dec }}>
       {children}
     </AppContext.Provider>
   );

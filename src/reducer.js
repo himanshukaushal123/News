@@ -27,7 +27,7 @@ const reducer = (state, action) => {
     case "Next_Page": {
       let pagenumber = state.page;
 
-      if (pagenumber >= state.nbPages) pagenumber = 1;
+      if (pagenumber >= state.nbPages) pagenumber = 0;
       if (pagenumber > 50) {
         pagenumber = 50;
       } else {
